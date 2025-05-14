@@ -114,8 +114,9 @@ pipeline {
 
                     // Stop and remove any existing container with the same name to avoid conflicts
                     // Using --no-run-if-empty to prevent errors if no container is found
-                    sh "docker ps -q --filter name=^/${containerName}$ | xargs --no-run-if-empty docker stop"
-                    sh "docker ps -aq --filter name=^/${containerName}$ | xargs --no-run-if-empty docker rm"
+                    // Escaped the '$' in the regex for container name to prevent Groovy interpolation
+                    sh "docker ps -q --filter name=^/${containerName}\\$ | xargs --no-run-if-empty docker stop"
+                    sh "docker ps -aq --filter name=^/${containerName}\\$ | xargs --no-run-if-empty docker rm"
 
                     // Run the new container in detached mode
                     // We'll map port 5002 on the Jenkins host to port 5000 in the container
