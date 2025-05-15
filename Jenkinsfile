@@ -14,7 +14,11 @@ pipeline {
         DOCKER_TAG = "${env.BUILD_NUMBER}"    // Using Jenkins built-in BUILD_NUMBER
         CONTAINER_NAME = "${DOCKER_IMAGE_NAME}-container" // Define container name
     }
-
+stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
     stages {
         stage('Build and Test') {
             steps {
