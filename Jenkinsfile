@@ -22,31 +22,7 @@ stage('Clean Workspace') {
     stages {
         stage('Build') {
             steps {
-<<<<<<< HEAD
                 bat 'docker build -t autoviz-dashboard .'
-=======
-                script {
-                    echo "Starting Build and Test stage..."
-                    try {
-                        // Ensure workspace is clean before build
-
-                        echo "Building Docker image: ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
-                        bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ."
-                        echo "Docker image built successfully."
-
-                        echo "Running tests inside the container..."
-                        // This command runs pytest within a new container from the image we just built.
-                        // The container is automatically removed after tests (--rm).
-                        bat "docker run --rm ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} pytest tests/"
-                        echo "Tests completed."
-
-                    } catch (Exception e) {
-                        echo "Build or test failed: ${e.message}"
-                        currentBuild.result = 'FAILURE'
-                        error("Build or test stage failed: ${e.message}") // error step will mark stage as failed
-                    }
-                }
->>>>>>> 86e3ba1d43b0abb1819bff3055317b3e55b19535
             }
         }
 
