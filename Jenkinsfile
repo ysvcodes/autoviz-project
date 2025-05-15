@@ -1,24 +1,6 @@
-// Jenkinsfile for autoviz-project (inspired by example)
-/*
- * Author: Atirola Adesanya
- * Project: autoviz-project
- * Purpose: Jenkins declarative pipeline for the autoviz-project.
- *          Automates build, test, and simulated deployment using Docker.
- *          Uses 'bat' for Windows compatibility.
- */
 pipeline {
-    agent any // Jenkins can use any available agent.
+    agent any
 
-    environment {
-        DOCKER_IMAGE_NAME = 'autoviz-project' // Consistent with previous setup
-        DOCKER_TAG = "${env.BUILD_NUMBER}"    // Using Jenkins built-in BUILD_NUMBER
-        CONTAINER_NAME = "${DOCKER_IMAGE_NAME}-container" // Define container name
-    }
-stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
     stages {
         stage('Build') {
             steps {
@@ -29,7 +11,7 @@ stage('Clean Workspace') {
         stage('Test') {
             steps {
                 // Only run tests if the app/tests directory exists
-                bat 'if exist app\tests pytest app/tests || echo "No tests directory found."'
+                bat 'if exist app\\tests pytest app/tests || echo "No tests directory found."'
             }
         }
 
