@@ -29,7 +29,7 @@ pipeline {
                         // Ensure workspace is clean before build
 
                         echo "Building Docker image: ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
-                        bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} -f app/Dockerfile app"
+bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} -f autoviz-project/app/Dockerfile autoviz-project/app"
                         echo "Docker image built successfully."
 
                         echo "Running tests inside the container..."
