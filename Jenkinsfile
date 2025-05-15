@@ -27,10 +27,9 @@ pipeline {
                     echo "Starting Build and Test stage..."
                     try {
                         // Ensure workspace is clean before build
-                        // cleanWs() // Optional: uncomment if you want to clean before build
 
                         echo "Building Docker image: ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
-bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ."
+                        bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} -f app/Dockerfile app"
                         echo "Docker image built successfully."
 
                         echo "Running tests inside the container..."
