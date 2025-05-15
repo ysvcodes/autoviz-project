@@ -84,11 +84,35 @@
             color: #e4576e;
             font-weight: bold;
         }
+        .purple-btn {
+            background: #a259f7;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 48px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 0 8px;
+            box-shadow: 0 2px 8px rgba(162, 89, 247, 0.08);
+            transition: background 0.2s;
+        }
+        .purple-btn:hover {
+            background: #8f43e7;
+        }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="header" style="text-align:center;">AutoViz - Your Company Statistics</div>
+        <div style="text-align:center; margin-bottom: 20px;">
+            <input type="file" id="csvInput" accept=".csv" style="display:none;">
+            <button class="purple-btn" onclick="document.getElementById('csvInput').click();">Import CSV</button>
+            <button class="purple-btn" onclick="exportCSV()">Export CSV</button>
+        </div>
+        <div id="no-data-message" style="color:#a084e8; text-align:center; font-size:1.2em; display:none;">
+            No data loaded. Import a CSV file to see stats.
+        </div>
         <div class="stats-row">
             <div class="stat-box">
                 <div id="subscribers">1,712</div>
@@ -120,87 +144,99 @@
         </div>
     </div>
     <script>
-        // Example data (replace with fetch from backend if needed)
-        const dashboardData = {
-            subscribers: 1712,
-            emailsSent: 971,
-            engagement: {
-                labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-                openRate: [80, 60, 65, 55, 70, 60, 75, 80, 90, 85, 75, 80],
-                clickRate: [30, 25, 20, 18, 22, 20, 25, 28, 35, 30, 28, 32]
-            },
-            campaigns: [
-                { name: "Risus elit", emails: 558, open: "85.7%", click: "48.1%", bounce: "24.4%", openDelta: "+9.3%", clickDelta: "-2.1%", bounceDelta: "+12.3%" },
-                { name: "Ipsum semper eros", emails: 207, open: "75.8%", click: "56.5%", bounce: "15.2%", openDelta: "+11.5%", clickDelta: "+5.5%", bounceDelta: "+15.3%" },
-                { name: "Aenean integer", emails: 149, open: "77.0%", click: "45.5%", bounce: "19.5%", openDelta: "-4.5%", clickDelta: "-24.1%", bounceDelta: "+19.5%" },
-                { name: "Massa felis tempor", emails: 74, open: "79.6%", click: "47.3%", bounce: "6.1%", openDelta: "-2.7%", clickDelta: "-1.2%", bounceDelta: "+6.4%" },
-                { name: "Erat nulla posuere cursus", emails: 36, open: "90.6%", click: "40.5%", bounce: "8.2%", openDelta: "+7.5%", clickDelta: "+2.3%", bounceDelta: "+4.2%" },
-                { name: "Quis mattis pellentesque", emails: 9, open: "82.5%", click: "50.3%", bounce: "30.0%", openDelta: "+2.0%", clickDelta: "+5.0%", bounceDelta: "+23.4%" },
-                { name: "Tempor eleifend", emails: 2, open: "87.5%", click: "36.3%", bounce: "25.0%", openDelta: "+11.0%", clickDelta: "-8.7%", bounceDelta: "+15.2%" }
-            ]
-        };
-
-        // Set stats
-        document.getElementById('subscribers').textContent = dashboardData.subscribers.toLocaleString();
-        document.getElementById('emails-sent').textContent = dashboardData.emailsSent.toLocaleString();
-
-        // Render chart
-        const ctx = document.getElementById('engagementChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: dashboardData.engagement.labels,
-                datasets: [
-                    {
-                        label: 'Open Rate',
-                        data: dashboardData.engagement.openRate,
-                        borderColor: '#7c3aed',
-                        backgroundColor: 'rgba(124,58,237,0.08)',
-                        fill: true,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Click Rate',
-                        data: dashboardData.engagement.clickRate,
-                        borderColor: '#a084e8',
-                        backgroundColor: 'rgba(160,132,232,0.08)',
-                        fill: true,
-                        tension: 0.4
+        function loadDashboard() {
+            fetch('/api/dashboard-data')
+                .then(response => response.json())
+                .then(dashboardData => {
+                    if (dashboardData.no_data) {
+                        document.getElementById('no-data-message').style.display = 'block';
+                        document.querySelector('.stats-row').style.display = 'none';
+                        document.querySelector('.chart-container').style.display = 'none';
+                        document.querySelector('.table-container').style.display = 'none';
+                        return;
                     }
-                ]
-            },
-            options: {
-                plugins: {
-                    legend: { labels: { color: '#6c3bbf' } }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { color: '#6c3bbf' }
-                    },
-                    x: {
-                        ticks: { color: '#6c3bbf' }
-                    }
-                }
-            }
+                    document.getElementById('no-data-message').style.display = 'none';
+                    document.querySelector('.stats-row').style.display = '';
+                    document.querySelector('.chart-container').style.display = '';
+                    document.querySelector('.table-container').style.display = '';
+
+                    document.getElementById('subscribers').textContent = dashboardData.subscribers.toLocaleString();
+                    document.getElementById('emails-sent').textContent = dashboardData.emailsSent.toLocaleString();
+
+                    const ctx = document.getElementById('engagementChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dashboardData.engagement.labels,
+                            datasets: [
+                                {
+                                    label: 'Open Rate',
+                                    data: dashboardData.engagement.openRate,
+                                    borderColor: '#7c3aed',
+                                    backgroundColor: 'rgba(124,58,237,0.08)',
+                                    fill: true,
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'Click Rate',
+                                    data: dashboardData.engagement.clickRate,
+                                    borderColor: '#a084e8',
+                                    backgroundColor: 'rgba(160,132,232,0.08)',
+                                    fill: true,
+                                    tension: 0.4
+                                }
+                            ]
+                        },
+                        options: {
+                            plugins: {
+                                legend: { labels: { color: '#6c3bbf' } }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { color: '#6c3bbf' }
+                                },
+                                x: {
+                                    ticks: { color: '#6c3bbf' }
+                                }
+                            }
+                        }
+                    });
+
+                    const tableBody = document.getElementById('campaigns-table');
+                    tableBody.innerHTML = '';
+                    dashboardData.campaigns.forEach(c => {
+                        tableBody.innerHTML += `
+                            <tr>
+                                <td>${c.Campaign || c.name}</td>
+                                <td>${c['Emails Sent'] || c.emails}</td>
+                                <td>${c['Open Rate'] || c.open} <span class="${(c.OpenDelta || c.openDelta).startsWith('+') ? 'positive' : 'negative'}">${c.OpenDelta || c.openDelta}</span></td>
+                                <td>${c['Click Rate'] || c.click} <span class="${(c.ClickDelta || c.clickDelta).startsWith('+') ? 'positive' : 'negative'}">${c.ClickDelta || c.clickDelta}</span></td>
+                                <td>${c['Bounce Rate'] || c.bounce} <span class="${(c.BounceDelta || c.bounceDelta).startsWith('+') ? 'positive' : 'negative'}">${c.BounceDelta || c.bounceDelta}</span></td>
+                            </tr>
+                        `;
+                    });
+                });
+        }
+
+        document.getElementById('csvInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('file', file);
+            fetch('/api/import-csv', {
+                method: 'POST',
+                body: formData
+            }).then(() => {
+                loadDashboard();
+            });
         });
 
-        // Render campaigns table
-        const tableBody = document.getElementById('campaigns-table');
-        dashboardData.campaigns.forEach(c => {
-            tableBody.innerHTML += `
-                <tr>
-                    <td>${c.name}</td>
-                    <td>${c.emails}</td>
-                    <td>${c.open} <span class="${c.openDelta.startsWith('+') ? 'positive' : 'negative'}">${c.openDelta}</span></td>
-                    <td>${c.click} <span class="${c.clickDelta.startsWith('+') ? 'positive' : 'negative'}">${c.clickDelta}</span></td>
-                    <td>${c.bounce} <span class="${c.bounceDelta.startsWith('+') ? 'positive' : 'negative'}">${c.bounceDelta}</span></td>
-                </tr>
-            `;
-        });
+        function exportCSV() {
+            window.location.href = '/api/export-csv';
+        }
 
-        // Example: To fetch data from backend, replace dashboardData assignment with a fetch call, e.g.:
-        // fetch('/api/dashboard-data').then(res => res.json()).then(data => { ... });
+        loadDashboard();
     </script>
 </body>
 </html>

@@ -1,0 +1,18 @@
+Month,Subscribers,Emails Sent,Open Rate,Click Rate,Bounce Rate,Campaign,OpenDelta,ClickDelta,BounceDelta
+Sep,1712,971,80,30,24.4,Risus elit,+9.3,-2.1,+12.3
+Oct,1500,900,75,28,22.1,Ipsum semper eros,+8.1,+1.5,+10.2
+Nov,1600,950,78,32,20.5,Aenean integer,+7.5,+2.0,+8.7
+Dec,1400,870,70,25,18.9,Massa felis tempor,-5.0,-3.0,+7.0
+Jan,1800,1000,85,35,25.0,Erat nulla posuere,+10.0,+3.0,+12.0
+Feb,1750,980,82,33,23.5,Quis mattis pellentesque,+9.0,+2.5,+11.5
+Mar,1650,940,77,29,21.2,Tempor eleifend,+6.5,+1.0,+9.0
+Apr,1700,960,80,31,22.8,Risus elit,+8.0,+1.8,+10.5
+May,1550,920,74,27,19.7,Ipsum semper eros,-4.0,-2.0,+8.0
+Jun,1620,950,79,30,21.9,Aenean integer,+7.0,+1.2,+9.3
+Jul,1850,1020,88,36,26.1,Massa felis tempor,+11.0,+4.0,+13.0
+Aug,1780,990,83,34,24.0,Erat nulla posuere,+9.5,+2.8,+12.7
+Sep,1720,975,81,31,24.7,Quis mattis pellentesque,+9.7,-1.8,+12.9
+Oct,1510,905,76,29,22.3,Tempor eleifend,+8.3,+1.7,+10.4
+Nov,1610,955,79,33,20.8,Risus elit,+7.8,+2.2,+8.9
+Dec,1410,875,71,26,19.2,Ipsum semper eros,-4.8,-2.8,+7.2
+
