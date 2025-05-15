@@ -17,6 +17,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                bat 'docker stop autoviz-dashboard || exit 0'
+                bat 'docker rm autoviz-dashboard || exit 0'
                 bat 'docker run -d -p 5000:5000 --name autoviz-dashboard autoviz-dashboard'
                 echo 'Dashboard is running at http://localhost:5000'
             }
