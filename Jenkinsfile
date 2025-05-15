@@ -30,7 +30,7 @@ pipeline {
                         // cleanWs() // Optional: uncomment if you want to clean before build
 
                         echo "Building Docker image: ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
-                        bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} -f autoviz-project/Dockerfile autoviz-project"                        
+bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ."
                         echo "Docker image built successfully."
 
                         echo "Running tests inside the container..."
