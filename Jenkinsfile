@@ -1,3 +1,10 @@
+
+// -----------------------------------------------------------------------------
+// Author: autoviz-project user
+// File Purpose: Jenkins pipeline configuration for the autoviz-project.
+//               Defines build, test, and deploy stages using Docker.
+// Dependencies: Jenkins, Docker, GitHub
+// -----------------------------------------------------------------------------
 pipeline {
     agent any
 
