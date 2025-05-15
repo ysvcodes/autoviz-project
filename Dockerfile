@@ -1,5 +1,5 @@
 # Dockerfile for autoviz-project
-# Author: autoviz-project user
+# Author: Atirola Adesanya
 # File Purpose: Defines the Docker image for the autoviz-project.
 # Base Image: Python 3.9-slim
 
