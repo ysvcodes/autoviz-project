@@ -1,6 +1,6 @@
 // Jenkinsfile for autoviz-project (inspired by example)
 /*
- * Author: autoviz-project user
+ * Author: Atirola Adesanya
  * Project: autoviz-project
  * Purpose: Jenkins declarative pipeline for the autoviz-project.
  *          Automates build, test, and simulated deployment using Docker.
@@ -14,7 +14,11 @@ pipeline {
         DOCKER_TAG = "${env.BUILD_NUMBER}"    // Using Jenkins built-in BUILD_NUMBER
         CONTAINER_NAME = "${DOCKER_IMAGE_NAME}-container" // Define container name
     }
-
+stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
     stages {
         stage('Build and Test') {
             steps {
@@ -22,7 +26,6 @@ pipeline {
                     echo "Starting Build and Test stage..."
                     try {
                         // Ensure workspace is clean before build
-                        // cleanWs() // Optional: uncomment if you want to clean before build
 
                         echo "Building Docker image: ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
                         bat "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ."
