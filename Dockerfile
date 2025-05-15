@@ -16,7 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code and tests into the container
 COPY ./app ./app
-COPY ./tests ./tests
 
 # Make port 5000 available (Flask app runs on this port by default)
 EXPOSE 5000
